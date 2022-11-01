@@ -1,70 +1,30 @@
-# Getting Started with Create React App
+# Lifeclip
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Why??
 
-## Available Scripts
+Most time as a developer, I often have to visit several documentations and articles again just to copy some important content. Being frusrated by this, I decided to build a web solution where I can clip important contents and get them later anywhere and on any device as long as I am signed in with my Gmail account.
 
-In the project directory, you can run:
+## What it does
 
-### `npm start`
+Its Simple, All it does is clip any content you want it to. Clipped contents can be retreived later by easily clicking the copy button. You can also have access to clipped contents anywhere and on any device as long as you are signed in. You can also update clipped contents, and also remove and add search tags. Contents which are not needed can however be deleted too. All in all, it is a no stress website. Its beautiful, simple and fast!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## What next?
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Several updates in both UI and UX will be coming along soon as I will be working to make this better everyday.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## What you can do for me
 
-### `npm run build`
+Buy me a coffe, lols 🤣. I am available for any remote web developing project, Hit me up, Please. You could also buy me a coffee though, by clicking the Donate link at the bottom section of the website.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+React JS - Library
+Cloud Firestore - Database
+Tailwind CSS
+Font Awesome Icons
+Github dark mode design scheme
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Dedication
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This website is dedicated to my Mum. I Love You So Much!

@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colors */
+  --bg-full: #010409;
+  --bg-trans-one: #0d1117;
+  --border-color: #21262d;
+  --white-1: #c9d1d9;
+  --white-2: #8b949e;
+  --white-3: #6e7681;
+}
+
+body {
+  background-color: var(--bg-full);
+
+  .btn-default {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border-color: rgba(240, 246, 252, 0.1);
+    outline: none;
+  }
+  .btn-default:hover {
+    background-color: #30363d;
+    border-color: #8b949e;
+  }
+  .checkingloggedin {
+    h2 {
+      color: var(--white-1);
+    }
+  }
+  .isloggedout {
+    .avatar {
+      background-color: var(--bg-trans-one);
+    }
+    .p {
+      color: var(--white-1);
+    }
+  }
+  .searchtags {
+    form {
+      border-color: var(--border-color);
+    }
+    .tags {
+      button {
+        .close {
+          font-size: 14px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .dropdown {
+    .heading {
+      background-color: var(--bg-trans-one);
+      color: var(--white-1);
+    }
+    .menu {
+      background-color: var(--bg-trans-one);
+      width: 150px;
+      .title {
+        color: var(--white-1);
+      }
+      .subtitle {
+        color: var(--white-2);
+      }
+    }
+  }
+  .clip {
+    background-color: var(--bg-trans-one);
+    border-color: var(--border-color);
+    textarea {
+      background-color: var(--bg-full);
+      resize: none;
+      height: 50px;
+      color: var(--white-1);
+      outline: none;
+    }
+    .content {
+      color: var(--white-2);
+      height: 50px;
+    }
+    .tags {
+      height: 50px;
+      max-height: 50px;
+
+      form {
+        input {
+          background-color: var(--bg-full);
+          color: var(--white-1);
+          border-color: var(--border-color);
+          outline: none;
+        }
+        input:focus {
+          border-color: #8b949e;
+        }
+      }
+      .close {
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  footer {
+    .heading {
+      color: var(--white-1);
+    }
+    .info {
+      color: var(--white-2);
+    }
+    .donate {
+      color: var(--white-1);
+    }
+  }
+}
