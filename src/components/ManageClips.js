@@ -194,8 +194,8 @@ const NewClip = ({ setClips, uid }) => {
   };
   const disableAddNewClipActionButton = newClip.content.length < 1;
   const disableDiscardActionbutton =
-    newClip.content.length + newClip.tags.length < 1 ||
-    newClip.clipType !== "text";
+    newClip.content.length + newClip.tags.length < 1 &&
+    newClip.clipType === "text";
 
   return (
     <article className="clip  flex flex-col w-sm  border p-2 rounded-md">
@@ -510,9 +510,7 @@ const ClipActions = ({ id, content }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <button
-              className="btn-default border px-3 py-1 mt-2 mr-2 rounded-md text-xs flex items-center justify-center"
-            >
+            <button className="btn-default border px-3 py-1 mt-2 mr-2 rounded-md text-xs flex items-center justify-center">
               {clip2.clipType === "link" && "visit"}
               {clip2.clipType === "email" && "email"}
               {clip2.clipType === "tel" && "call"}
