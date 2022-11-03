@@ -21,6 +21,7 @@ import { generateKey } from "../assets/utils/generateKey";
 import loading from "../assets/imgs/loading.gif";
 
 const ClipContext = createContext(null);
+const clipTypes = ["text", "link", "email", "tel"];
 
 const ManageClips = ({ sort, filter, tags, email }) => {
   const { sortType, asc } = sort;
@@ -123,6 +124,9 @@ const NewClip = ({ setClips, email }) => {
   const handleChangeNewClipContent = (e) => {
     setNewClip({ ...newClip, content: e.target.value });
   };
+  const handleChangeNewClipType = (e) => {
+    setNewClip({ ...newClip, clipType: e.target.value });
+  };
   const handleClickAddNewClipTag = (e) => {
     e.preventDefault();
     if (!Array.from(newClip.tags).find((tag) => tag.content === newTag)) {
@@ -190,7 +194,8 @@ const NewClip = ({ setClips, email }) => {
   };
   const disableAddNewClipActionButton = newClip.content.length < 1;
   const disableDiscardActionbutton =
-    newClip.content.length + newClip.tags.length < 1;
+    newClip.content.length + newClip.tags.length < 1 ||
+    newClip.clipType !== "text";
 
   return (
     <article className="clip  flex flex-col w-sm  border p-2 rounded-md">
@@ -200,6 +205,19 @@ const NewClip = ({ setClips, email }) => {
         className="text-xs p-2"
       />
       <ul className="tags flex flex-wrap">
+        <li>
+          <select
+            onChange={(e) => handleChangeNewClipType(e)}
+            className="btn-default rounded-sm  px-2 py-1  mt-2 mr-2 text-xs flex items-center justify-center"
+            value={newClip.clipType}
+          >
+            {clipTypes.map((clipType, index) => (
+              <option key={index} value={clipType}>
+                {clipType}
+              </option>
+            ))}
+          </select>
+        </li>
         {newClip.tags.map((tag) => (
           <li key={tag.id}>
             <div className="btn-default rounded-sm  px-2 py-1  mt-2 mr-2 text-xs flex items-center justify-center">
@@ -256,17 +274,17 @@ const NewClip = ({ setClips, email }) => {
   );
 };
 
-const Clip = ({ id, content, tags }) => {
+const Clip = ({ id, content, tags, clipType }) => {
   return (
     <article className="clip flex flex-col w-sm border p-2 rounded-md">
-      <ClipContent id={id} content={content} />
-      <ClipTags id={id} tags={tags} />
+      <ClipContent id={id} content={content} clipType={clipType} />
+      <ClipTags id={id} tags={tags} clipType={clipType} />
       <ClipActions id={id} content={content} />
     </article>
   );
 };
 
-const ClipContent = ({ id, content }) => {
+const ClipContent = ({ id, content, clipType }) => {
   const { setClips } = useContext(ClipContext);
   const [clipContentEditMode, setClipContentEditMode] = useState(false);
   const handleChangeClipContent = (e) => {
@@ -283,10 +301,20 @@ const ClipContent = ({ id, content }) => {
       onChange={(e) => handleChangeClipContent(e)}
       className="text-xs p-2"
     />
+  ) : clipType === "code" ? (
+    <pre>
+      <code
+        onDoubleClick={() => setClipContentEditMode(true)}
+        className="language-javascript content overflow-auto p-2 text-xs"
+        title="Double-click to edit"
+      >
+        {content}
+      </code>
+    </pre>
   ) : (
     <div
       onDoubleClick={() => setClipContentEditMode(true)}
-      className="content truncate p-2 text-xs"
+      className="content overflow-auto p-2 text-xs"
       title="Double-click to edit"
     >
       {content}
@@ -294,9 +322,16 @@ const ClipContent = ({ id, content }) => {
   );
 };
 
-const ClipTags = ({ id, tags }) => {
+const ClipTags = ({ id, tags, clipType }) => {
   const { setClips } = useContext(ClipContext);
   const [newTag, setNewTag] = useState("");
+  const handleChangeClipType = (e) => {
+    setClips((prevClips) =>
+      Array.from(prevClips).map((clip) =>
+        clip.id === id ? { ...clip, clipType: e.target.value } : clip
+      )
+    );
+  };
   const handleClickAddNewClipTag = (e) => {
     e.preventDefault();
     if (!Array.from(tags).find((tag) => tag.id === newTag)) {
@@ -336,6 +371,19 @@ const ClipTags = ({ id, tags }) => {
   };
   return (
     <ul className="tags flex flex-wrap overflow-y-auto">
+      <li>
+        <select
+          onChange={(e) => handleChangeClipType(e)}
+          className="btn-default rounded-sm  px-2 py-1  mt-2 mr-2 text-xs flex items-center justify-center"
+          value={clipType}
+        >
+          {clipTypes.map((clipType, index) => (
+            <option key={index} value={clipType}>
+              {clipType}
+            </option>
+          ))}
+        </select>
+      </li>
       {Array.from(tags).map((tag) => {
         return (
           <li key={tag.id}>
@@ -415,6 +463,7 @@ const ClipActions = ({ id, content }) => {
     await updateDoc(doc(db, "users", email, "clips", id), {
       content: clip.content,
       tags: clip.tags,
+      clipType: clip.clipType,
       ldm: Timestamp.now(),
     })
       .then(() => {
@@ -431,7 +480,23 @@ const ClipActions = ({ id, content }) => {
     return clip2 === undefined
       ? true
       : clip1.content === clip2.content &&
-          JSON.stringify(clip1.tags) === JSON.stringify(clip2.tags);
+          JSON.stringify(clip1.tags) === JSON.stringify(clip2.tags) &&
+          clip1.clipType === clip2.clipType;
+  };
+  const showClipTypeAction =
+    clip2.clipType === "link" ||
+    clip2.clipType === "email" ||
+    clip2.clipType === "tel";
+  const getClipHrefPrefix = (clipType) => {
+    let res = "";
+    if (clipType === "link") {
+      res = "https://";
+    } else if (clipType === "email") {
+      res = "mailto:";
+    } else {
+      res = "tel:";
+    }
+    return res;
   };
   return (
     <div className="flex justify-end">
@@ -439,6 +504,18 @@ const ClipActions = ({ id, content }) => {
         <Info className="text-sky-800" />
       </button> */}
       <div className="flex">
+        {showClipTypeAction && (
+          <a href={getClipHrefPrefix(clip2.clipType) + clip2.content}>
+            <button
+              onClick={handleClickCopyClip}
+              className="btn-default border px-3 py-1 mt-2 mr-2 rounded-md text-xs flex items-center justify-center"
+            >
+              {clip2.clipType === "link" && "visit"}
+              {clip2.clipType === "email" && "email"}
+              {clip2.clipType === "tel" && "call"}
+            </button>
+          </a>
+        )}
         <button
           onClick={handleClickCopyClip}
           className="btn-default border px-3 py-1 mt-2 mr-2 rounded-md text-xs flex items-center justify-center"

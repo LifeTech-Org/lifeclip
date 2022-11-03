@@ -9,7 +9,7 @@ import Footer from "./Footer";
 import ManageClips from "./ManageClips";
 
 const IsLoggedIn = ({ user }) => {
-  const [sort, setSort] = useState({ sortType: "ldm", asc: true });
+  const [sort, setSort] = useState({ sortType: "ldm", asc: false });
   const [filter, setFilter] = useState(null);
   const [tags, setTags] = useState([]);
   const { email, photoURL } = user;
@@ -28,7 +28,6 @@ const IsLoggedIn = ({ user }) => {
 export default IsLoggedIn;
 
 const SearchTags = ({ tags, setTags, photoURL }) => {
-  console.log(photoURL);
   const [newTag, setNewTag] = useState("");
   const handleClickAddNewTag = (e) => {
     e.preventDefault();
@@ -94,28 +93,23 @@ const SearchTags = ({ tags, setTags, photoURL }) => {
 
 const SortAndFilter = ({ setSort, setFilter }) => {
   const [showSortMenu, setShowSortMenu] = useState(false);
-  // const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
   const sortType = [
     { name: "date added", type: "doc" },
     { name: "date modified", type: "ldm" },
   ];
-  // const filterType = [
-  //   {
-  //     name: "clip type",
-  //     type: "clipType",
-  //     values: ["link", "mail", "tel", "text"],
-  //   },
-  //   {
-  //     name: "clip types",
-  //     type: "clipTypes",
-  //     values: ["link", "mail", "tel", "text"],
-  //   },
-  // ];
+  const filterType = [
+    {
+      name: "clip type",
+      type: "clipType",
+      values: ["link", "mail", "tel", "text"],
+    },
+  ];
   return (
     <div className="flex my-1">
       <div className="dropdown relative">
         <div
-          className="flex items-center heading px-4 py-1 mt-2 mr-2 rounded-full text-xs flex items-center justify-center cursor-pointer"
+          className="flex items-center heading px-4 py-1 mt-2 mr-2 rounded-full text-xs justify-center cursor-pointer"
           onClick={() => setShowSortMenu(!showSortMenu)}
         >
           <span>Sort</span>
@@ -156,12 +150,13 @@ const SortAndFilter = ({ setSort, setFilter }) => {
         )}
       </div>
       {/* I will intriduce filter later */}
-      {/* <div className="dropdown">
+      <div className="dropdown">
         <span
-          className="heading px-4 py-1 mt-2 mr-2 rounded-full text-xs flex items-center justify-center cursor-pointer"
+          className="flex items-center heading px-4 py-1 mt-2 mr-2 rounded-full text-xs justify-center cursor-pointer"
           onClick={() => setShowFilterMenu(!showFilterMenu)}
         >
-          Filter
+          <span>Filter</span>
+          <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
         </span>
         {showFilterMenu && (
           <ul className="menu absolute z-10 w-fit p-2 rounded-md text-xs mt-2 shadow-xl">
@@ -176,12 +171,13 @@ const SortAndFilter = ({ setSort, setFilter }) => {
                     {filter.values.map((value) => (
                       <li
                         key={value}
-                        onClick={() =>
+                        onClick={() => {
                           setFilter({
                             filterType: filter.type,
                             filterValue: value,
-                          })
-                        }
+                          });
+                          setShowFilterMenu(false);
+                        }}
                       >
                         <button className="subtitle capitalize py-1">
                           {value}
@@ -194,7 +190,7 @@ const SortAndFilter = ({ setSort, setFilter }) => {
             })}
           </ul>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

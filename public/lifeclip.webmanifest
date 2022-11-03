@@ -1,0 +1,16 @@
+{
+  "name": "Lifeclip",
+  "short_name": "Lifeclip",
+  "description": "Lifeclip is a very beautiful and simple to use clipping solution. By signing in with your Gmail Account, You can add and manage clipped content effectively without stress.",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "32x32",
+      "type": "image/jpg"
+    }
+  ],
+  "start_url": ".",
+  "display": "fullscreen",
+  "theme_color": "#010409",
+  "background_color": "#010409"
+}

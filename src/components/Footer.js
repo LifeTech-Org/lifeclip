@@ -43,7 +43,7 @@ const Footer = ({ className }) => {
           to keep my blood running 💪.
         </span>
         <a
-          href="https://www.paypal.com/donate/?token=xMi1EAj_6ywJXCFS1II7c9-n7iEG_5WhsOWTiAeL9j-t_-6mcYbRrIhQTJScHTv45ihE4TXCIO3WuS2X&fromUL=true"
+          href="https://www.paypal.com/donate/?hosted_button_id=GQP3B34WZ5YDJ"
           className="bg-blue-800 px-3 py-1 my-2 rounded-full text-xs  hover:bg-blue-700 flex w-fit items-center"
         >
           <FontAwesomeIcon icon={faMoneyBill} className="text-orange-300" />
