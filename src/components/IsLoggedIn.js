@@ -12,13 +12,13 @@ const IsLoggedIn = ({ user }) => {
   const [sort, setSort] = useState({ sortType: "ldm", asc: false });
   const [filter, setFilter] = useState(null);
   const [tags, setTags] = useState([]);
-  const { email, photoURL } = user;
+  const { uid, photoURL } = user;
 
   return (
     <div className="flex-1 flex flex-col max-w-5xl h-screen overflow-y py-10 px-5">
       <SearchTags {...{ tags, setTags, photoURL }} />
       <SortAndFilter {...{ setSort, setFilter }} />
-      <ManageClips {...{ sort, filter, tags, email }} />
+      <ManageClips {...{ sort, filter, tags, uid }} />
       <Info />
       <Footer className="mt-4 mb-0" />
     </div>

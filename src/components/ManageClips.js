@@ -23,7 +23,7 @@ import loading from "../assets/imgs/loading.gif";
 const ClipContext = createContext(null);
 const clipTypes = ["text", "link", "email", "tel"];
 
-const ManageClips = ({ sort, filter, tags, email }) => {
+const ManageClips = ({ sort, filter, tags, uid }) => {
   const { sortType, asc } = sort;
   const { filterType, filterValue } =
     filter === null ? { filterType: null, filterValue: null } : filter;
@@ -33,7 +33,7 @@ const ManageClips = ({ sort, filter, tags, email }) => {
 
   useEffect(() => {
     const unSub = onSnapshot(
-      collection(db, "users", email, "clips"),
+      collection(db, "users", uid, "clips"),
       (snapshot) => {
         snapshotIndex.current = snapshotIndex.current + 1;
         const clips = [];
@@ -50,7 +50,7 @@ const ManageClips = ({ sort, filter, tags, email }) => {
       }
     );
     return () => unSub();
-  }, [email]);
+  }, [uid]);
 
   const isInArray = (_arr1, _arr2) => {
     let res = false;
@@ -80,11 +80,11 @@ const ManageClips = ({ sort, filter, tags, email }) => {
       </article>
     </div>
   ) : (
-    <ClipContext.Provider value={{ clips, setClips, stableClips, email }}>
+    <ClipContext.Provider value={{ clips, setClips, stableClips, uid }}>
       <section className="flex-1 overflow-auto">
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-3 my-2">
           <li>
-            <NewClip {...{ setClips, email }} />
+            <NewClip {...{ setClips, uid }} />
           </li>
           {clips
             .filter((clip) =>
@@ -109,7 +109,7 @@ const ManageClips = ({ sort, filter, tags, email }) => {
 
 export default ManageClips;
 
-const NewClip = ({ setClips, email }) => {
+const NewClip = ({ setClips, uid }) => {
   const [newClip, setNewClip] = useState({
     id: generateKey(),
     content: "",
@@ -154,7 +154,7 @@ const NewClip = ({ setClips, email }) => {
   const handleClickAddNewClip = async () => {
     setActionsStatus({ ...actionsStatus, add: "adding" });
     const _newClip = { ...newClip, doc: Timestamp.now(), ldm: Timestamp.now() };
-    await setDoc(doc(db, "users", email, "clips", newClip.id), _newClip)
+    await setDoc(doc(db, "users", uid, "clips", newClip.id), _newClip)
       .then(() => {
         setClips((prevClips) => {
           return [_newClip, ...prevClips];
@@ -420,7 +420,7 @@ const ClipTags = ({ id, tags, clipType }) => {
 };
 
 const ClipActions = ({ id, content }) => {
-  const { clips, setClips, stableClips, email } = useContext(ClipContext);
+  const { clips, setClips, stableClips, uid } = useContext(ClipContext);
   const [actionsStatus, setActionsStatus] = useState({
     copy: "rest",
     delete: "rest",
@@ -449,7 +449,7 @@ const ClipActions = ({ id, content }) => {
         3000
       );
     } else {
-      await deleteDoc(doc(db, "users", email, "clips", id))
+      await deleteDoc(doc(db, "users", uid, "clips", id))
         .then(() => {
           setClips((prevClips) =>
             Array.from(prevClips).filter((clip) => clip.id !== id)
@@ -460,7 +460,7 @@ const ClipActions = ({ id, content }) => {
   };
   const handleClickUpdateClip = async (id) => {
     const clip = Array.from(clips).find((clip) => clip.id === id);
-    await updateDoc(doc(db, "users", email, "clips", id), {
+    await updateDoc(doc(db, "users", uid, "clips", id), {
       content: clip.content,
       tags: clip.tags,
       clipType: clip.clipType,
@@ -505,9 +505,12 @@ const ClipActions = ({ id, content }) => {
       </button> */}
       <div className="flex">
         {showClipTypeAction && (
-          <a href={getClipHrefPrefix(clip2.clipType) + clip2.content}>
+          <a
+            href={getClipHrefPrefix(clip2.clipType) + clip2.content}
+            target="_blank"
+            rel="noreferrer"
+          >
             <button
-              onClick={handleClickCopyClip}
               className="btn-default border px-3 py-1 mt-2 mr-2 rounded-md text-xs flex items-center justify-center"
             >
               {clip2.clipType === "link" && "visit"}
