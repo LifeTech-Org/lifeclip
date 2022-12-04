@@ -441,7 +441,7 @@ const ClipActions = ({ id, content }) => {
       3000
     );
   };
-  const handleClickDeleteClip = async (id) => {
+  const handleClickDeleteClip = async () => {
     if (actionsStatus.delete === "rest") {
       setActionsStatus({ ...actionsStatus, delete: "pending" });
       setTimeout(
@@ -451,14 +451,12 @@ const ClipActions = ({ id, content }) => {
     } else {
       await deleteDoc(doc(db, "users", uid, "clips", id))
         .then(() => {
-          setClips((prevClips) =>
-            Array.from(prevClips).filter((clip) => clip.id !== id)
-          );
+          setClips(clips.filter((clip) => clip.id !== id));
         })
         .catch((error) => console.log("Error deleting file: " + error));
     }
   };
-  const handleClickUpdateClip = async (id) => {
+  const handleClickUpdateClip = async () => {
     const clip = Array.from(clips).find((clip) => clip.id === id);
     await updateDoc(doc(db, "users", uid, "clips", id), {
       content: clip.content,
@@ -484,9 +482,9 @@ const ClipActions = ({ id, content }) => {
           clip1.clipType === clip2.clipType;
   };
   const showClipTypeAction =
-    clip2.clipType === "link" ||
-    clip2.clipType === "email" ||
-    clip2.clipType === "tel";
+    clip2?.clipType === "link" ||
+    clip2?.clipType === "email" ||
+    clip2?.clipType === "tel";
   const getClipHrefPrefix = (clipType) => {
     let res = "";
     if (clipType === "link") {
@@ -524,14 +522,14 @@ const ClipActions = ({ id, content }) => {
           {actionsStatus.copy === "rest" ? "copy" : actionsStatus.copy}
         </button>
         <button
-          onClick={() => handleClickDeleteClip(id)}
+          onClick={handleClickDeleteClip}
           className="btn-default border px-3 py-1 mt-2 mr-2 bg-sky-100 text-sky-800 rounded-md text-xs flex items-center justify-center"
         >
           {actionsStatus.delete === "rest" ? "delete" : "delete?"}
         </button>
         {!sameClipObject(clip1, clip2) && (
           <button
-            onClick={() => handleClickUpdateClip(id)}
+            onClick={handleClickUpdateClip}
             className="btn-default border px-3 py-1 mt-2 mr-2 bg-sky-100 text-sky-800 rounded-md text-xs flex items-center justify-center"
           >
             update
