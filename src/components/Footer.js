@@ -56,9 +56,12 @@ const Footer = ({ className }) => {
 
 const ContactAvatar = ({ icon, link, text }) => {
   return (
-    <a href={link} className="btn-default text-xs px-3 py-1 mr-2 rounded-full">
+    <a
+      href={link}
+      className="btn-default text-xs px-3 py-1 mr-2 rounded-full min-w-fit"
+    >
       <FontAwesomeIcon icon={icon} />
-      <span className=" ml-2 font-bold">{text}</span>
+      <span className=" ml-2 font-bold ">{text}</span>
     </a>
   );
 };

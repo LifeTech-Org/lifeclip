@@ -5,8 +5,8 @@ import { Close } from "@mui/icons-material";
 import { signInWithPopup, signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { auth, provider } from "../firebaseConfig";
-import Footer from "./Footer";
 import ManageClips from "./ManageClips";
+import Footer from "./Footer";
 
 const IsLoggedIn = ({ user }) => {
   const [sort, setSort] = useState({ sortType: "ldm", asc: false });
@@ -17,10 +17,8 @@ const IsLoggedIn = ({ user }) => {
   return (
     <div className="flex-1 flex flex-col max-w-5xl h-screen overflow-y py-10 px-5">
       <SearchTags {...{ tags, setTags, photoURL }} />
-      <SortAndFilter {...{ setSort, setFilter }} />
+      <SortAndFilter {...{ filter, setSort, setFilter }} />
       <ManageClips {...{ sort, filter, tags, uid }} />
-      <Info />
-      <Footer className="mt-4 mb-0" />
     </div>
   );
 };
@@ -29,6 +27,7 @@ export default IsLoggedIn;
 
 const SearchTags = ({ tags, setTags, photoURL }) => {
   const [newTag, setNewTag] = useState("");
+  const [showInfo, setShowInfo] = useState(false);
   const handleClickAddNewTag = (e) => {
     e.preventDefault();
     //Only append if the tag doesnt exist already.
@@ -54,11 +53,15 @@ const SearchTags = ({ tags, setTags, photoURL }) => {
           className="flex-1 w-full  bg-transparent text-xs text-white p-4 outline-none"
           placeholder="Enter search tags"
         />
-        <img
-          src={photoURL}
-          className="rounded-full h-11 w-11 ml-2"
-          alt="avatar"
-        />
+        <div className="relative">
+          <img
+            src={photoURL}
+            className="rounded-full h-11 w-11 ml-2 cursor-pointer"
+            alt="avatar"
+            onClick={() => setShowInfo(!showInfo)}
+          />
+          {showInfo && <Info />}
+        </div>
       </form>
       {tags.length > 0 && (
         <ul className="tags flex my-1 flex-wrap">
@@ -91,7 +94,7 @@ const SearchTags = ({ tags, setTags, photoURL }) => {
   );
 };
 
-const SortAndFilter = ({ setSort, setFilter }) => {
+const SortAndFilter = ({ filter, setSort, setFilter }) => {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const sortType = [
@@ -116,7 +119,7 @@ const SortAndFilter = ({ setSort, setFilter }) => {
           <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
         </div>
         {showSortMenu && (
-          <ul className="menu absolute z-10 w-fit p-2 rounded-md text-xs mt-2 shadow-xl">
+          <ul className="menu absolute z-10 w-fit p-2 rounded-md text-xs mt-2 shadow-xl border">
             {sortType.map((sort) => {
               return (
                 <React.Fragment key={sort.type}>
@@ -149,18 +152,23 @@ const SortAndFilter = ({ setSort, setFilter }) => {
           </ul>
         )}
       </div>
-      {/* I will intriduce filter later */}
       <div className="dropdown">
         <span
           className="flex items-center heading px-4 py-1 mt-2 mr-2 rounded-full text-xs justify-center cursor-pointer"
           onClick={() => setShowFilterMenu(!showFilterMenu)}
         >
-          <span>Filter</span>
+          <span>{filter ? filter.filterValue : "All"}</span>
           <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
         </span>
         {showFilterMenu && (
-          <ul className="menu absolute z-10 w-fit p-2 rounded-md text-xs mt-2 shadow-xl">
-            <li onClick={() => setFilter(null)} className="title">
+          <ul className="menu absolute z-10 w-fit p-2 rounded-md text-xs mt-2 shadow-xl border">
+            <li
+              onClick={() => {
+                setFilter(null);
+                setShowFilterMenu(false);
+              }}
+              className="title"
+            >
               <button>All</button>
             </li>
             {filterType.map((filter) => {
@@ -213,21 +221,26 @@ const Info = () => {
   };
 
   return (
-    <div className="mt-2">
-      <button
-        onClick={handleClickLogOut}
-        className="btn-default text-xs px-3 py-1 mr-2 rounded-full my-1"
-      >
-        <FontAwesomeIcon icon={faSignOut} />
-        <span className="ml-2 font-bold">Sign out</span>
-      </button>
-      <button
-        onClick={handleClickSignInWithADifferentAccount}
-        className="btn-default text-xs px-3 py-1 mr-2 rounded-full my-1"
-      >
-        <FontAwesomeIcon icon={faGoogle} />
-        <span className="ml-2 font-bold">Sign in with a different account</span>
-      </button>
+    <div className="info mt-2 absolute right-0 w-72 sm:w-96 p-3 rounded-md shadow-xl z-20 border">
+      <Footer />
+      <div className="mt-2">
+        <button
+          onClick={handleClickLogOut}
+          className="btn-default text-xs px-3 py-1 mr-2 rounded-full my-1"
+        >
+          <FontAwesomeIcon icon={faSignOut} />
+          <span className="ml-2 font-bold">Sign out</span>
+        </button>
+        <button
+          onClick={handleClickSignInWithADifferentAccount}
+          className="btn-default text-xs px-3 py-1 mr-2 rounded-full my-1"
+        >
+          <FontAwesomeIcon icon={faGoogle} />
+          <span className="ml-2 font-bold">
+            Sign in with a different account
+          </span>
+        </button>
+      </div>
     </div>
   );
 };
