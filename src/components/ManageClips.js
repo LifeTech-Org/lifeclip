@@ -83,9 +83,12 @@ const ManageClips = ({ sort, filter, tags, uid }) => {
     <ClipContext.Provider value={{ clips, setClips, stableClips, uid }}>
       <section className="flex-1 overflow-auto">
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-3 my-2">
-          <li>
-            <NewClip {...{ setClips, uid }} />
-          </li>
+          {/* Dont show new clip when a serch tag is active */}
+          {tags.length === 0 && (
+            <li>
+              <NewClip {...{ setClips, uid }} />
+            </li>
+          )}
           {clips
             .filter((clip) =>
               filterType === null ? true : clip[filterType] === filterValue
