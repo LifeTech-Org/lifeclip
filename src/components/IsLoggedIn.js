@@ -31,8 +31,8 @@ const SearchTags = ({ tags, setTags, photoURL }) => {
   const handleClickAddNewTag = (e) => {
     e.preventDefault();
     //Only append if the tag doesnt exist already.
-    if (!tags.find((tag) => tag === newTag)) {
-      setTags([newTag, ...tags]);
+    if (!tags.find((tag) => tag === newTag.trim())) {
+      setTags([newTag.trim(), ...tags]);
     }
     setNewTag("");
   };
